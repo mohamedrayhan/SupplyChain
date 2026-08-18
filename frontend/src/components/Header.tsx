@@ -1,14 +1,15 @@
 import React from 'react';
-import { Activity, RefreshCw, Cpu, RotateCcw, ShieldCheck, Zap } from 'lucide-react';
+import { Activity, RefreshCw, Cpu, RotateCcw, ShieldCheck, Zap, Sparkles } from 'lucide-react';
 
 interface HeaderProps {
   onRefresh: () => void;
   onReset: () => void;
+  onOpenTour: () => void;
   isLoading: boolean;
   lastUpdated: Date | null;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onRefresh, onReset, isLoading, lastUpdated }) => {
+export const Header: React.FC<HeaderProps> = ({ onRefresh, onReset, onOpenTour, isLoading, lastUpdated }) => {
   return (
     <header className="bg-[#090d16]/90 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-50">
       {/* Top Telemetry Ticker Strip */}
@@ -58,6 +59,14 @@ export const Header: React.FC<HeaderProps> = ({ onRefresh, onReset, isLoading, l
 
         {/* Action & Status Controls */}
         <div className="flex items-center gap-3">
+          <button
+            onClick={onOpenTour}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-xs font-bold font-mono transition cursor-pointer shadow-md shadow-blue-950/50"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Judge Demo Tour</span>
+          </button>
+
           <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span className="text-slate-300 font-mono text-[11px]">Twin Sync: Active</span>

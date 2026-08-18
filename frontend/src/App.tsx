@@ -9,6 +9,7 @@ import { RecoverySimulator } from './pages/RecoverySimulator';
 import { DigitalTwin } from './pages/DigitalTwin';
 import { AICopilot } from './pages/AICopilot';
 import type { ChatMessage } from './pages/AICopilot';
+import { DemoTourModal } from './components/DemoTourModal';
 import { resetDemoData } from './api/client';
 
 export function App() {
@@ -17,6 +18,7 @@ export function App() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   const [selectedTwinNodeId, setSelectedTwinNodeId] = useState<string | null>(null);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(false);
 
   // Persistent Copilot Chat History across entire session
   const [copilotMessages, setCopilotMessages] = useState<ChatMessage[]>([
@@ -77,8 +79,15 @@ export function App() {
       <Header 
         onRefresh={handleRefresh} 
         onReset={handleReset} 
+        onOpenTour={() => setIsTourOpen(true)}
         isLoading={isLoading} 
         lastUpdated={lastUpdated} 
+      />
+
+      <DemoTourModal 
+        isOpen={isTourOpen} 
+        onClose={() => setIsTourOpen(false)} 
+        onNavigateTab={handleNavigateTab} 
       />
 
       <div className="flex-1 flex overflow-hidden">
