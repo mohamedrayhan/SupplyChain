@@ -11,7 +11,10 @@ import {
   AlertTriangle, 
   Sliders, 
   Network, 
-  Zap
+  Zap,
+  Bot,
+  Link2,
+  Compass
 } from 'lucide-react';
 
 interface DemoTourModalProps {
@@ -108,6 +111,45 @@ const TOUR_STEPS: TourStep[] = [
       'Isolated Node Route Focus eliminating canvas visual congestion',
       'NLP Vector Space Cosine Similarity Copilot with live database entity lookup & token streaming'
     ]
+  },
+  {
+    title: '7. Autonomous Multi-Agent AI Swarm',
+    tab: 'swarm',
+    icon: Bot,
+    badge: 'Phase 10 • Self-Healing Agent Swarm',
+    description: 'Autonomous multi-agent consensus network (Master Orchestrator, Carrier Spot-Auction, Inventory Rebalancing, Dock Turnaround) resolving bottlenecks without human delay.',
+    actionInstruction: 'Click "Trigger Autonomous Swarm Cycle" to watch the multi-agent thought stream, spot bids, and automated state mutations.',
+    keyHighlights: [
+      '4 cooperating AI agents (Master Orchestrator, Spot-Auction, Inventory Balancer, Dock Yard Manager)',
+      'Autonomous 3PL spot rate bidding within supervisor budget guardrails (₹2.0L cap)',
+      'Direct state persistence that clears delayed cargo and restores national on-time rate to 94.2%'
+    ]
+  },
+  {
+    title: '8. Blockchain Smart Contracts & IoT Escrow',
+    tab: 'blockchain',
+    icon: Link2,
+    badge: 'Phase 11 • Decentralized Trust Layer',
+    description: 'Decentralized zero-dispute freight escrow settlement on Polygon Layer-2 with Chainlink IoT telemetry oracles and dual-signature NFT consignment passports.',
+    actionInstruction: 'Select an active escrow and click "Submit Proof & Settle" to watch the 1.4-second smart contract settlement transaction confirm on Polygon L2.',
+    keyHighlights: [
+      'Polygon L2 Smart Contracts (`SupplyChainEscrow.sol`) with zero invoice dispute latency',
+      'Chainlink Decentralized Oracle Network (DON) verifying tamper-proof GPS & temperature telemetry',
+      'ERC-1155 NFT Consignment Passports with Driver & Warehouse dual-key cryptographic handshakes'
+    ]
+  },
+  {
+    title: '9. GNN Risk Propagation & Deep RL Rerouter',
+    tab: 'gnn',
+    icon: Compass,
+    badge: 'Phase 12 • Graph Neural Nets & PPO Policy',
+    description: 'Graph Convolutional Network (GCN/GAT) computing multi-hop risk diffusion across 16 topology nodes, paired with Deep Reinforcement Learning (PPO) for Pareto dynamic cargo rerouting.',
+    actionInstruction: 'Click "Simulate Diffusion Wave" to watch multi-hop risk propagate, then click "Execute Deep RL Dynamic Reroute" to optimize highway bypass paths.',
+    keyHighlights: [
+      '2-Layer Graph Convolutional Network (GCN) evaluating message passing across 16 multi-echelon nodes',
+      'Hop-by-hop attention diffusion (1-Hop Immediate -> 2-Hop Intermediate -> Full 3-Hop Equilibrium)',
+      'Deep RL (PPO) multi-objective vehicle trajectory optimizer avoiding highway gridlock (+4.0h saved)'
+    ]
   }
 ];
 
@@ -136,6 +178,8 @@ export const DemoTourModal: React.FC<DemoTourModalProps> = ({ isOpen, onClose, o
       const prevIndex = currentStepIndex - 1;
       setCurrentStepIndex(prevIndex);
       onNavigateTab(TOUR_STEPS[prevIndex].tab);
+    } else {
+      onClose();
     }
   };
 
@@ -173,7 +217,7 @@ export const DemoTourModal: React.FC<DemoTourModalProps> = ({ isOpen, onClose, o
         </div>
 
         {/* Step Progress Tracker */}
-        <div className="grid grid-cols-6 gap-2">
+        <div className="grid grid-cols-9 gap-1.5">
           {TOUR_STEPS.map((step, idx) => (
             <button
               key={idx}

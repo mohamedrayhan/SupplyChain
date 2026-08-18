@@ -5,6 +5,9 @@ from typing import List
 
 from .database import get_db, engine, Base
 from . import models, schemas, crud, seed
+from .agent_swarm import swarm_coordinator
+from .blockchain_engine import blockchain_engine
+from .gnn_rl_engine import gnn_model, rl_optimizer
 
 Base.metadata.create_all(bind=engine)
 
@@ -94,6 +97,47 @@ def simulate_mismatch(item_id: str, db: Session = Depends(get_db)):
     if not updated_item:
         raise HTTPException(status_code=404, detail="Inventory item not found")
     return updated_item
+
+# --- Phase 10: Autonomous Multi-Agent Swarm Endpoints ---
+@app.post("/api/agents/orchestrate", response_model=schemas.AgentOrchestrateResponse, summary="Trigger autonomous AI agent swarm cycle")
+def orchestrate_agents(req: schemas.AgentOrchestrateRequest = schemas.AgentOrchestrateRequest(), db: Session = Depends(get_db)):
+    budget = req.budget_guardrail or 200000.0
+    return swarm_coordinator.run_swarm_cycle(db, budget)
+
+@app.get("/api/agents/history", response_model=List[schemas.SupplyChainEventSchema], summary="Get autonomous agent execution history")
+def get_agent_history(db: Session = Depends(get_db)):
+    return db.query(models.SupplyChainEvent).filter(models.SupplyChainEvent.entity_type == "AgentSwarm").order_by(models.SupplyChainEvent.timestamp.desc()).limit(15).all()
+
+# --- Phase 11: Blockchain Smart Contract & Oracle Endpoints ---
+@app.get("/api/blockchain/escrows", response_model=List[schemas.SmartContractEscrowSchema], summary="Get all smart contract escrows")
+def get_blockchain_escrows():
+    return blockchain_engine.get_all_escrows()
+
+@app.post("/api/blockchain/escrow/oracle-settle", response_model=schemas.OracleSettleResponse, summary="Trigger Chainlink Oracle proof & execute smart settlement")
+def settle_blockchain_escrow(req: schemas.OracleSettleRequest):
+    return blockchain_engine.settle_via_chainlink_oracle(
+        shipment_id=req.shipment_id,
+        is_on_time=req.is_on_time,
+        actual_delay_hours=req.actual_delay_hours,
+        temperature_compliant=req.temperature_compliant
+    )
+
+@app.get("/api/blockchain/stats", response_model=schemas.BlockchainStatsResponse, summary="Get Web3 network metrics & TVL stats")
+def get_blockchain_stats():
+    return blockchain_engine.get_blockchain_stats()
+
+# --- Phase 12: Graph Neural Networks & Deep RL Rerouting Endpoints ---
+@app.post("/api/ml/gnn/cascade-forecast", response_model=schemas.GNNCascadeResponse, summary="Run GCN Graph Neural Network multi-hop risk cascade")
+def get_gnn_cascade_forecast(req: schemas.GNNCascadeRequest = schemas.GNNCascadeRequest()):
+    root_node = req.root_node_id or "NODE-WH-CHE"
+    multiplier = req.severity_multiplier or 1.0
+    return gnn_model.compute_gnn_risk_cascade(root_node, multiplier)
+
+@app.post("/api/ml/rl/optimal-reroute", response_model=schemas.RLOptimizeResponse, summary="Run Deep Reinforcement Learning PPO dynamic cargo rerouter")
+def optimize_rl_reroute(req: schemas.RLOptimizeRequest = schemas.RLOptimizeRequest()):
+    shp_id = req.shipment_id or "SHP-2026-001"
+    traffic = req.traffic_factor or 90.0
+    return rl_optimizer.optimize_reroute(shp_id, traffic)
 
 @app.post("/api/reset-demo", summary="Reset database to initial demo state")
 def reset_demo_data():

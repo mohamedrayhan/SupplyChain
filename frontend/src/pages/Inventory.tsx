@@ -376,7 +376,7 @@ export const Inventory: React.FC = () => {
                         {item.reserved_quantity.toLocaleString()}
                       </td>
                       <td className="px-4 py-4 text-right text-amber-400">
-                        {item.being_picked_quantity.toLocaleString()}
+                        {(item.being_picked_quantity ?? item.picking_quantity ?? 0).toLocaleString()}
                       </td>
                       <td className="px-4 py-4 text-right text-purple-400">
                         {item.in_transit_quantity.toLocaleString()}

@@ -8,6 +8,9 @@ import { RiskCenter } from './pages/RiskCenter';
 import { RecoverySimulator } from './pages/RecoverySimulator';
 import { DigitalTwin } from './pages/DigitalTwin';
 import { AICopilot } from './pages/AICopilot';
+import { AgentSwarm } from './pages/AgentSwarm';
+import { BlockchainSettlement } from './pages/BlockchainSettlement';
+import { GNNTopologyReroute } from './pages/GNNTopologyReroute';
 import type { ChatMessage } from './pages/AICopilot';
 import { DemoTourModal } from './components/DemoTourModal';
 import { resetDemoData } from './api/client';
@@ -113,6 +116,9 @@ export function App() {
               setMessages={setCopilotMessages} 
             />
           )}
+          {activeTab === 'swarm' && <AgentSwarm />}
+          {activeTab === 'blockchain' && <BlockchainSettlement />}
+          {activeTab === 'gnn' && <GNNTopologyReroute />}
         </main>
       </div>
     </div>

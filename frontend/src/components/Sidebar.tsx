@@ -7,6 +7,9 @@ import {
   AlertTriangle, 
   Sliders, 
   Bot,
+  Zap,
+  Link2,
+  Compass,
   ChevronRight
 } from 'lucide-react';
 
@@ -24,6 +27,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
     { id: 'simulator', label: 'Recovery Simulator', icon: Sliders, status: 'Active' },
     { id: 'twin', label: 'Supply Chain Twin', icon: Network, status: 'Active' },
     { id: 'copilot', label: 'AI Copilot', icon: Bot, status: 'Active' },
+    { id: 'swarm', label: 'AI Agent Swarm', icon: Zap, status: 'Phase 10' },
+    { id: 'blockchain', label: 'Blockchain & Escrow', icon: Link2, status: 'Phase 11' },
+    { id: 'gnn', label: 'GNN & Deep RL Routing', icon: Compass, status: 'Phase 12' },
   ];
 
   return (
@@ -52,7 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
               {item.status === 'Active' ? (
                 <ChevronRight className="w-4 h-4 text-blue-400" />
               ) : (
-                <span className="text-[10px] bg-slate-900 text-slate-500 px-1.5 py-0.5 rounded border border-slate-800 font-mono">
+                <span className="text-[10px] bg-slate-900 text-cyan-400 px-1.5 py-0.5 rounded border border-slate-800 font-mono font-bold">
                   {item.status}
                 </span>
               )}
@@ -64,8 +70,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => 
       {/* Footer Info */}
       <div className="p-4 border-t border-slate-800/80">
         <div className="bg-slate-950 p-3 rounded-xl border border-slate-800/80">
-          <div className="text-xs font-bold text-slate-300 font-mono">Phase 8 Active</div>
-          <div className="text-[11px] text-slate-400 mt-0.5">Autonomous Copilot Online</div>
+          <div className="text-xs font-bold text-cyan-400 font-mono flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            CHAINSIGHT 2.0
+          </div>
+          <div className="text-[11px] text-slate-400 mt-0.5">All 12 Phases Active Locally</div>
         </div>
       </div>
     </aside>

@@ -10,7 +10,14 @@ import type {
   SimulatorEvaluation,
   ApplyRecoveryResponse,
   TwinGraphData,
-  CopilotQueryResponse
+  CopilotQueryResponse,
+  AgentOrchestrateResponse,
+  SupplyChainEvent,
+  SmartContractEscrow,
+  OracleSettleResponse,
+  BlockchainStats,
+  GNNCascadeResponse,
+  RLOptimizeResponse
 } from '../types';
 
 const API_BASE_URL = '/api';
@@ -77,6 +84,60 @@ export const fetchInventory = async (): Promise<InventoryItem[]> => {
 
 export const simulateInventoryMismatch = async (itemId: string): Promise<InventoryItem> => {
   const response = await axios.post<InventoryItem>(`${API_BASE_URL}/inventory/simulate-mismatch/${itemId}`);
+  return response.data;
+};
+
+// Phase 10: AI Agent Swarm API Bindings
+export const orchestrateAgentSwarm = async (budgetGuardrail: number = 200000.0): Promise<AgentOrchestrateResponse> => {
+  const response = await axios.post<AgentOrchestrateResponse>(`${API_BASE_URL}/agents/orchestrate`, { budget_guardrail: budgetGuardrail });
+  return response.data;
+};
+
+export const fetchAgentHistory = async (): Promise<SupplyChainEvent[]> => {
+  const response = await axios.get<SupplyChainEvent[]>(`${API_BASE_URL}/agents/history`);
+  return response.data;
+};
+
+// Phase 11: Blockchain Smart Contract & Oracle Bindings
+export const fetchBlockchainEscrows = async (): Promise<SmartContractEscrow[]> => {
+  const response = await axios.get<SmartContractEscrow[]>(`${API_BASE_URL}/blockchain/escrows`);
+  return response.data;
+};
+
+export const settleViaChainlinkOracle = async (
+  shipmentId: string,
+  isOnTime: boolean = true,
+  delayHours: number = 0.0,
+  tempCompliant: boolean = true
+): Promise<OracleSettleResponse> => {
+  const response = await axios.post<OracleSettleResponse>(`${API_BASE_URL}/blockchain/escrow/oracle-settle`, {
+    shipment_id: shipmentId,
+    is_on_time: isOnTime,
+    actual_delay_hours: delayHours,
+    temperature_compliant: tempCompliant
+  });
+  return response.data;
+};
+
+export const fetchBlockchainStats = async (): Promise<BlockchainStats> => {
+  const response = await axios.get<BlockchainStats>(`${API_BASE_URL}/blockchain/stats`);
+  return response.data;
+};
+
+// Phase 12: GNN and Deep RL API Bindings
+export const fetchGNNCascadeForecast = async (rootNodeId: string = "NODE-WH-CHE", severity: number = 1.0): Promise<GNNCascadeResponse> => {
+  const response = await axios.post<GNNCascadeResponse>(`${API_BASE_URL}/ml/gnn/cascade-forecast`, {
+    root_node_id: rootNodeId,
+    severity_multiplier: severity
+  });
+  return response.data;
+};
+
+export const optimizeDeepRLReroute = async (shipmentId: string = "SHP-2026-001", traffic: number = 90.0): Promise<RLOptimizeResponse> => {
+  const response = await axios.post<RLOptimizeResponse>(`${API_BASE_URL}/ml/rl/optimal-reroute`, {
+    shipment_id: shipmentId,
+    traffic_factor: traffic
+  });
   return response.data;
 };
 
